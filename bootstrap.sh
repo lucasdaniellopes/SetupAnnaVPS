@@ -33,7 +33,7 @@ if ! command -v python3 >/dev/null 2>&1; then
 fi
 
 # Baixa o instalador principal em Python (ajuste o caminho conforme necessário)
-INSTALLER_URL="https://raw.githubusercontent.com/lucasdaniellopes/InstaladorVPS/main/instalador_vps.py"
+INSTALLER_URL="https://raw.githubusercontent.com/lucasdaniellopes/SetupAnnaVPS/main/instalador_vps.py"
 INSTALLER_FILE="/tmp/instalador_vps.py"
 curl -fsSL "$INSTALLER_URL" -o "$INSTALLER_FILE"
 chmod +x "$INSTALLER_FILE"
