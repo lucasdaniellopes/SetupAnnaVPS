@@ -187,16 +187,6 @@ volumes:
 
 def deploy_stacks():
     print("[+] Deploy das stacks...")
-    # Lógica para Portainer
-    if portainer_ja_existe():
-        config = ler_portainer_config()
-        if not config or not config.get("PORTAINER_USERNAME") or not config.get("PORTAINER_PASSWORD"):
-            print("Portainer já existe, mas as credenciais não foram encontradas.")
-            config = solicitar_credenciais_portainer()
-        else:
-            print("Portainer já existe e as credenciais já estão salvas.")
-    else:
-        print("Portainer ainda não está instalado. O deploy irá prosseguir normalmente.")
 
     # 1. Criar networks e volumes necessários
     criar_network("externa")
