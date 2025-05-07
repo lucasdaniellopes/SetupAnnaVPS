@@ -298,6 +298,13 @@ def deploy_stacks():
         else:
             print("[ERRO] Portainer não respondeu a tempo. Tente novamente.")
             return
+        # Ler novamente o arquivo de config para garantir que as credenciais estão disponíveis
+        config = ler_portainer_config()
+        if not config or not config.get("PORTAINER_USERNAME") or not config.get("PORTAINER_PASSWORD"):
+            print("[ERRO] Não foi possível obter as credenciais do Portainer após instalar. Abortando.")
+            return
+        username = config.get("PORTAINER_USERNAME")
+        password = config.get("PORTAINER_PASSWORD")
     else:
         portainer_domain = input("Domínio para o Portainer (ex: portainer.seudominio.com): ").strip()
         while not portainer_domain:
