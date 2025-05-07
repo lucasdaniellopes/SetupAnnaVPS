@@ -264,12 +264,47 @@ def deploy_stacks():
 
     # Dados do Portainer
     portainer_url = f"http://localhost:9000"
+    import secrets, string, time, requests
+    from abc import ABC, abstractmethod
+
+    portainer_url = f"http://localhost:9000"
     config = ler_portainer_config()
-    if not config:
-        print("[ERRO] Não foi possível obter as credenciais do Portainer.")
-        return
-    username = config.get("PORTAINER_USERNAME")
-    password = config.get("PORTAINER_PASSWORD")
+    if not config or not config.get("PORTAINER_USERNAME") or not config.get("PORTAINER_PASSWORD"):
+        print("[INFO] Portainer não detectado ou sem credenciais. Instalando Portainer...")
+        portainer_domain = input("Domínio para o Portainer (ex: portainer.seudominio.com): ").strip()
+        while not portainer_domain:
+            portainer_domain = input("Domínio não pode ser vazio: ").strip()
+        username = input("Usuário admin do Portainer: ").strip()
+        while not username:
+            username = input("Usuário não pode ser vazio: ").strip()
+        password = ''.join(secrets.choice(string.ascii_letters + string.digits) for _ in range(12))
+        salvar_portainer_config(username, password)
+        # Deploy do Portainer via Docker CLI (primeiro acesso)
+        with open("portainer.yaml", "w") as f:
+            f.write(PortainerStack(portainer_domain, username, password).generate_yaml())
+        subprocess.run(["docker", "stack", "deploy", "-c", "portainer.yaml", "portainer"], check=True)
+        print(f"[INFO] Portainer deployado.")
+        print(f"Usuário: {username}")
+        print(f"Senha gerada: {password}")
+        # Esperar Portainer estar pronto
+        for i in range(30):
+            try:
+                r = requests.get(f"{portainer_url}/api/status", timeout=2)
+                if r.status_code == 200:
+                    print("[OK] Portainer está pronto para uso!")
+                    break
+            except Exception:
+                time.sleep(2)
+        else:
+            print("[ERRO] Portainer não respondeu a tempo. Tente novamente.")
+            return
+    else:
+        portainer_domain = input("Domínio para o Portainer (ex: portainer.seudominio.com): ").strip()
+        while not portainer_domain:
+            portainer_domain = input("Domínio não pode ser vazio: ").strip()
+        username = config.get("PORTAINER_USERNAME")
+        password = config.get("PORTAINER_PASSWORD")
+        print("[OK] Portainer já está instalado e credenciais carregadas.")
 
     import secrets, string, time, requests
     from abc import ABC, abstractmethod
