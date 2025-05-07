@@ -1,0 +1,28 @@
+services:
+  pgvector:
+    image: pgvector/pgvector:pg16
+    # ports:
+    #   - 5433:5432
+    volumes:
+      - pgvector:/var/lib/postgresql/data
+    networks:
+      - interna
+    environment:
+      - POSTGRES_PASSWORD=bf6068b9d2207fe06ded952e8e16d349
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == manager
+      resources:
+        limits:
+          cpus: "1"
+          memory: 2024M
+
+volumes:
+  pgvector:
+
+networks:
+  interna:
+    external: true

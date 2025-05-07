@@ -1,0 +1,18 @@
+global:
+  scrape_interval: 15s # Coleta dados dos alvos a cada 15 segundos por padrão.
+  # Adicione estes rótulos a qualquer série temporal ou alerta ao se comunicar com sistemas externos (federação, armazenamento remoto, Alertmanager).
+  # external_labels:
+  #  monitor: 'codelab-monitor'
+# Configuração de coleta contendo exatamente um endpoint para monitorar, neste caso, é o próprio Prometheus.
+scrape_configs:
+  - job_name: "prometheus"
+    # Substitui o padrão global e coleta dados deste trabalho a cada 5 segundos especificamente para o job do prometheus.
+    scrape_interval: 5s
+    static_configs:
+      - targets: ["localhost:9090"]
+  - job_name: "node_exporter"
+    static_configs:
+      - targets: ["node_exporter:9100"]
+  - job_name: "cadvisor"
+    static_configs:
+      - targets: ["cadvisor:8080"]
