@@ -1,1 +1,121 @@
-stacks/
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual Environment
+venv/
+ENV/
+env/
+.venv/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Configurações locais e sensíveis
+portainer_config.json
+.vps_installer/
+config.json
+*.env
+.env.*
+/root/.docker_installer/
+
+# Arquivos gerados durante instalação
+dns_config_*.txt
+vps_config_export_*.json
+install.log
+
+# YAMLs gerados (mantém apenas os da pasta stacks/)
+/*.yaml
+!stacks/*.yaml
+
+# Backups
+*.backup
+*.bak
+*.old
+vps_backup_*.tar.gz
+
+# Certificados e chaves (NUNCA commitar!)
+*.pem
+*.key
+*.crt
+*.csr
+acme.json
+certificates/
+letsencrypt/
+
+# Docker
+.docker/
+docker-compose.override.yml
+docker-compose.local.yml
+
+# Logs
+*.log
+logs/
+*.out
+*.err
+
+# Temporários
+tmp/
+temp/
+.tmp/
+*.tmp
+*.temp
+
+# Sistema
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Arquivos de teste
+test_*
+*_test.py
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# Documentação local
+docs/_build/
+site/
+.mkdocs/
+
+# Diretórios de instalação (caso alguém teste localmente)
+/opt/vps-installer/
+
+# Outros
+.cache/
+.local/
+node_modules/
+package-lock.json
+yarn.lock
+
+# Arquivos específicos do projeto que não devem ser versionados
+# mas mantém a pasta stacks/ com seus arquivos
+!stacks/
+!stacks/configs/
+
+config dominios cloudfare.txt

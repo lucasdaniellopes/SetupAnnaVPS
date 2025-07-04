@@ -1,0 +1,37 @@
+services:
+  dozzle:
+    image: amir20/dozzle:latest
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    #    ports:
+    #      - 4040:8080
+    environment:
+      DOZZLE_MODE: "swarm"
+      DOZZLE_AUTH_PROVIDER: "simple"
+      DOZZLE_LEVEL: "info"
+      DOZZLE_FILTER: "status=running"
+      DOZZLE_HOSTNAME: "logs2.rafaelpedrosa.com.br"
+      # DOZZLE_FILTER: "label=log_me"
+    networks:
+      - externa
+      - interna
+    deploy:
+      labels:
+        traefik.enable: "true"
+        traefik.http.routers.dozzle.service: "dozzle"
+        traefik.http.services.dozzle.loadbalancer.server.port: 8080
+        traefik.http.routers.dozzle.rule: "Host(`logs2.rafaelpedrosa.com.br`)"
+        traefik.http.routers.dozzle.tls: "true"
+        traefik.http.routers.dozzle.tls.certresolver: "le"
+        traefik.http.routers.dozzle.entrypoints: "websecure"
+    configs:
+      - source: config_dozzle
+        target: /data/users.yml
+configs:
+  config_dozzle:
+    external: true
+networks:
+  externa:
+    external: true
+  interna:
+    external: true

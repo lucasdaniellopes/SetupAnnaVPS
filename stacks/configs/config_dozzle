@@ -1,0 +1,8 @@
+# Primeiro, gere um hash SHA-256: 
+# echo -n 'if5maBHrGcH2tMs' | sha256sum
+
+users: 
+  rafaelpedr@gmail.com: # <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< Altere esse 'nome_de_usuario' 
+    name: "Rafael Pedrosa" 
+    password: "82befe85ce04df6462b28634e4a487010ee4ca7a5441bccb0c68150a4c637720" # <<< Senha gerada (olhe acima)
+    email: rafaelpedr@gmail.com

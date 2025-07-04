@@ -1,0 +1,29 @@
+#!/bin/bash
+set -e
+
+# Chama o entrypoint original
+docker-entrypoint.sh "$@" &
+
+# Espera o PostgreSQL iniciar
+until pg_isready -U "$POSTGRES_USER"; do
+  echo "Esperando o PostgreSQL iniciar..."
+  sleep 2
+done
+
+# Seu script de criação de bancos de dados
+DATABASES="chatwoot,n8n,evolution,dify,directus,typebot,calcom" # Atualize Se Preferir
+
+IFS=',' read -r -a DB_ARRAY <<< "$DATABASES"
+
+for db in "${DB_ARRAY[@]}"; do
+  echo "Verificando se o banco de dados '$db'..."
+  RESULT=$(psql -U "$POSTGRES_USER" -d "$POSTGRES_DB" -tc "SELECT 1 FROM pg_database WHERE datname = '$db';")
+  if [ -z "$RESULT" ]; then
+    echo "Banco de dados '$db' não existe. Criando..."
+    psql -U "$POSTGRES_USER" -d "$POSTGRES_DB" -c "CREATE DATABASE \"$db\";"
+  else
+    echo "Banco de dados '$db' já existe."
+  fi
+done
+
+wait -n
